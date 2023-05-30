@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.parent{
+    background: linear-gradient(to bottom right, #001253, #E14D2A);
+    @apply w-full h-screen
+    flex justify-center items-center
+}
+
+.main_container{
+    @apply lg:h-4/5 lg:w-2/4 rounded-xl
+    h-full w-full
+    bg-white
+    flex flex-col items-center justify-center
+    shadow shadow-black shadow-lg 
+}
+
+.sign_in_text{
+    font-weight: bold;
+    background: linear-gradient(to right, #E14D2A, #001253);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    @apply lg:text-4xl text-3xl  pb-16
+}
+
+.form_parent{
+    @apply flex flex-col  lg:w-3/5 
+    w-10/12 
+}
+
+.direct_login{
+    @apply text-lg
+    flex flex-row justify-between gap-2
+}
+
+.direct_login_btn{
+    @apply bg-red-300 w-1/2 h-16 flex justify-center items-center gap-1
+    rounded-md
+}
+
+.login_form{
+    @apply flex flex-col pt-5
+    gap-2
+   
+}
+
+.inputs{
+    @apply focus:outline-none
+    focus:border-none
+    pt-1 pb-3  pr-2 
+    rounded-md
+    w-11/12
+    bg-transparent
+    
+}
+
+.error_text{
+    font-size: 12px;
+    font-weight: 450;
+    @apply text-red-500 text-right
+}
+
+@media (max-width: 300px){
+    .direct_login_btn{
+        
+    }
+    .direct_login_btn p{
+        display: none;
+    }
+}
