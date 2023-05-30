@@ -36,7 +36,7 @@
 
 .direct_login_btn{
     @apply bg-red-300 w-1/2 h-16 flex justify-center items-center gap-1
-    rounded-md
+    rounded-md shadow shadow-pink-950 shadow-md
 }
 
 .login_form{
