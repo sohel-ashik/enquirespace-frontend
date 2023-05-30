@@ -9,11 +9,12 @@
 }
 
 .main_container{
-    @apply lg:h-4/5 lg:w-2/4 rounded-xl
+    @apply lg:h-fit lg:w-2/4 rounded-xl
     h-full w-full
     bg-white
     flex flex-col items-center justify-center
     shadow shadow-black shadow-lg 
+    lg:pt-5 lg:pb-5
 }
 
 .sign_in_text{
@@ -21,12 +22,12 @@
     background: linear-gradient(to right, #E14D2A, #001253);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    @apply lg:text-4xl text-3xl  pb-16
+    @apply lg:text-4xl text-3xl  pb-10
 }
 
 .form_parent{
     @apply flex flex-col  lg:w-3/5 
-    w-10/12 
+    w-10/12
 }
 
 .direct_login{
@@ -69,3 +70,4 @@
         display: none;
     }
 }
+

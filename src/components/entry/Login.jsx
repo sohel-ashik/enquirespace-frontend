@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import styles from './signup_login.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faFacebookF, faGoogle} from '@fortawesome/free-brands-svg-icons';
+import Common from './Login_Signup_common';
 
-export default function Signup_login(){
+export default function Login(){
     const [email,setEmail] = useState('');
     const [pass,setPass] = useState('');
 
@@ -16,20 +15,11 @@ export default function Signup_login(){
     return(
         <div className={styles.parent}>
             <div className={styles.main_container}>
-                <div className={styles.sign_in_text}>
-                    Sign in
-                </div>
+                <Common.Header header_name='Sign in'/>
 
                 <div className={styles.form_parent}>
-                    <div className={styles.direct_login}>
-                        {/* sign in with direct email or password */}
-                        <button className={`${styles.direct_login_btn} text-white`} style={{backgroundColor:'#001253'}}>
-                            <FontAwesomeIcon icon={faFacebookF} size="2x"/>
-                            <p>acebook</p></button>
-                        <button className={`${styles.direct_login_btn} text-white`} style={{backgroundColor:'#E14D2A'}}>
-                            <FontAwesomeIcon icon={faGoogle} size="2x"/>
-                            <p>oogle</p></button>
-                    </div>
+                    
+                    <Common.Direct_Login />
 
                     <form className={styles.login_form}>
 
@@ -72,10 +62,7 @@ export default function Signup_login(){
                             >Sign in</button>
                     </form>
 
-                    <div className='text-center mt-3 flex justify-center items-center gap-2'>
-                        Don't have an account? 
-                        <p className='text-blue-600 hover:cursor-pointer'>sign up</p>
-                    </div>
+                    <Common.Bottom msg="Don't have an account?" link='Sign up'/>
                 </div>
                 
             </div>
