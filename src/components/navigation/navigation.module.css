@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+
+.small_nav{
+    @apply hidden
+}
+.nav{
+    @apply h-14 w-full text-bluish bg-gray-200
+    flex gap-3 items-center fixed justify-between top-0
+}
+
+.app_name{
+    @apply font-bold text-2xl  pl-10 pr-4
+    text-bluish hover:cursor-pointer
+}
+
+.icon_holder{
+    @apply flex items-center justify-center h-14 w-14
+    /* hover:bg-gray-300 */
+    hover:border-b-4
+    hover:border-reddish
+    hover:cursor-pointer
+}
+
+.icon{
+    @apply text-xl
+}
+
+@media (max-width: 950px){
+    .nav{
+        @apply hidden
+    }
+    .small_nav{
+        @apply h-28 w-full  flex flex-col fixed
+    }
+}

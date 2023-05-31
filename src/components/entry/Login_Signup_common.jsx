@@ -1,6 +1,7 @@
 import styles from './signup_login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faFacebookF, faGoogle} from '@fortawesome/free-brands-svg-icons';
+import {Link} from 'react-router-dom';
 
 function Header({header_name}){
     return(
@@ -25,11 +26,13 @@ function Direct_Login(){
 
 }
 
-function Bottom({msg,link}){
+function Bottom({msg,link,path}){
     return(
         <div className='text-center mt-3 flex justify-center items-center gap-2'>
-            {msg} 
-            <p className='text-blue-600 hover:cursor-pointer'>{link}</p>
+            {msg}
+            <Link to={path}>
+                <p className='text-blue-600 hover:cursor-pointer'>{link}</p>
+            </Link>
         </div>
     )
 }

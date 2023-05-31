@@ -119,7 +119,7 @@ export default function Signup(){
 
                     <Common.LoginOrSignupError msg=''/>
 
-                    <Common.Bottom msg='Already registered?' link='Log in'/>
+                    <Common.Bottom msg='Already registered?' link='Log in' path='/login'/>
                 </div>
             </div>
         </div>

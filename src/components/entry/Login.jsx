@@ -62,7 +62,7 @@ export default function Login(){
                             >Sign in</button>
                     </form>
 
-                    <Common.Bottom msg="Don't have an account?" link='Sign up'/>
+                    <Common.Bottom msg="Don't have an account?" link='Sign up' path='/signup'/>
                 </div>
                 
             </div>
