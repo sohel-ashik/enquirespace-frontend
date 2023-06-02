@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faHouse,faCircleQuestion, faCoins, faMagnifyingGlass, faCirclePlus, faTableList} from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react';
 import default_avatar from '../../assets/default_avatar.png';
+import {useNavigate} from 'react-router-dom';
 
 function BigNav({allState}){
     const {search,setSearch,homeColor,questionColor,handleItemClick} = allState;
+
     return(
         <nav className={styles.nav}>
             <div className='flex items-center '>
@@ -14,9 +16,11 @@ function BigNav({allState}){
 
             <div className={`flex items-center gap-3 pr-5 text-white`}>
                 <div className='flex items-center'>
+                    
                     <div className={`${styles.icon_holder} ${homeColor}`} onClick={()=>handleItemClick('home')}>
                         <FontAwesomeIcon className={styles.icon} icon={faHouse}/>   
                     </div>
+                    
                     <div className={`${styles.icon_holder} ${questionColor}`} onClick={()=>handleItemClick('questions')}>
                         <FontAwesomeIcon className={styles.icon} icon={faCircleQuestion}/>
                     </div>
@@ -34,14 +38,13 @@ function BigNav({allState}){
                     <FontAwesomeIcon className='text-xl' icon={faCirclePlus}/>
                 </div>
 
-                <div className='flex text-md items-center gap-2  p-1 bg-reddishLight pt-2 pb-2 pl-4 pr-4 rounded-3xl'>
-                    <FontAwesomeIcon className={styles.icon} icon={faCoins}/>
-                    <p className='font-bold text-xs'>12</p>
+                <div className='flex text-md items-center gap-2  p-1 bg-yellow-300 text-bluishLight pt-2 pb-2 pl-4 pr-4 rounded-3xl'>
+                    <FontAwesomeIcon className='' icon={faCoins}/>
+                    <p className='font-bold text-xs'>213</p>
                 </div>
 
-                <img className='bg-white h-10 w-10 rounded-full ' src={default_avatar}/>
+                <img className='bg-white h-10 w-10 rounded-full hover:cursor-pointer' src={default_avatar} onClick={()=>handleItemClick('profile')}/>
 
-                {/* </div> */}
             </div>
         </nav>
     )
@@ -49,6 +52,7 @@ function BigNav({allState}){
 
 function SmallNav({allState}){
     const {search,setSearch,handleItemClick,homeColor,questionColor,addQuestionColor,listColor,profileColor} = allState;
+    
 
     return(
         <nav className={styles.small_nav}>
@@ -63,20 +67,24 @@ function SmallNav({allState}){
                 </div>
                 
             </div>
-            <div className='h-14 w-full bg-gray-200 flex justify-evenly items-center text-bluish'>
-                <div className={` text-3xl h-full flex items-center ${homeColor}`} onClick={()=>handleItemClick('home')}>
+            <div className='h-14 w-full bg-bluishLight flex justify-evenly items-center '>
+                
+                <div className={` text-3xl h-full flex items-center ${homeColor}`} onClick={()=>{handleItemClick('home')}}>
                     <FontAwesomeIcon icon={faHouse}/>
                 </div>
+                
                 <div className={` text-3xl h-full flex items-center ${questionColor}`} onClick={()=>handleItemClick('questions')}>
                     <FontAwesomeIcon icon={faCircleQuestion}/>
                 </div>
-                <div className={` text-3xl h-full flex items-center ${listColor}`} onClick={()=>handleItemClick('list')}>
+                
+                <div className={` text-3xl h-full flex items-center ${listColor}`} onClick={()=>{handleItemClick('list')}}>
                     <FontAwesomeIcon icon={faTableList}/>
                 </div>
+                
                 <div className={` text-3xl h-full flex items-center ${addQuestionColor}`} onClick={()=>handleItemClick('add')}>
                     <FontAwesomeIcon icon={faCirclePlus}/>
                 </div>
-                <div className={` text-3xl h-full flex items-center ${profileColor}`} onClick={()=>handleItemClick('profile')}>
+                <div className={` text-3xl h-full flex  items-center ${profileColor}`} onClick={()=>handleItemClick('profile')}>
                     <img className={`bg-white h-9 w-9 rounded-full`} src={default_avatar}/>
                 </div>
             </div>
@@ -88,54 +96,66 @@ function SmallNav({allState}){
 
 export default function Navigation(){
     const [search,setSearch] = useState('');
-    const [homeColor,setHomeColor] = useState('text-bluish');
-    const [questionColor, setQuestionColor] = useState('text-bluish');
-    const [addQuestionColor, setAddQuestionColor] = useState('text-bluish');
-    const [listColor, setListColor] = useState('text-bluish');
-    const [profileColor, setProfileColor] = useState('text-bluish');
+    const [homeColor,setHomeColor] = useState('text-white');
+    const [questionColor, setQuestionColor] = useState('text-white');
+    const [addQuestionColor, setAddQuestionColor] = useState('text-white');
+    const [listColor, setListColor] = useState('text-white');
+    const [profileColor, setProfileColor] = useState('text-white');
+
+    // use for navigation
+    const navigate = useNavigate();
 
     const handleItemClick = (item)=>{
         if(item == 'home'){
-            setHomeColor('border-b-4 border-reddish text-reddish transition-all duration-500');
-            setQuestionColor('text-bluish');
-            setAddQuestionColor('text-bluish');
-            setListColor('text-bluish');
-            setProfileColor('text-bluish');
+            setHomeColor('border-b-4 border-white text-reddishLight transition-all duration-500');
+            setQuestionColor('text-white');
+            setAddQuestionColor('text-white');
+            setListColor('text-white');
+            setProfileColor('text-white');
+
+            navigate('/home');
 
         }else if(item == 'questions'){
-            setQuestionColor('border-b-4 border-reddish text-reddish transition-all duration-500');
-            setHomeColor('text-bluish');
-            setAddQuestionColor('text-bluish');
-            setListColor('text-bluish');
-            setProfileColor('text-bluish');
+            setQuestionColor('border-b-4 border-white text-reddishLight transition-all duration-500');
+            setHomeColor('text-white');
+            setAddQuestionColor('text-white');
+            setListColor('text-white');
+            setProfileColor('text-white');
 
         }else if(item == 'refresh'){
-            setHomeColor('text-bluish');
-            setQuestionColor('text-bluish');
-            setAddQuestionColor('text-bluish');
-            setListColor('text-bluish');
-            setProfileColor('text-bluish');
+            setHomeColor('text-white');
+            setQuestionColor('text-white');
+            setAddQuestionColor('text-white');
+            setListColor('text-white');
+            setProfileColor('text-white');
+
+            navigate('/home');
 
         }else if(item == 'list'){
-            setListColor('border-b-4 border-reddish text-reddish transition-all duration-500');
-            setHomeColor('text-bluish');
-            setQuestionColor('text-bluish');
-            setAddQuestionColor('text-bluish');
-            setProfileColor('text-bluish');
+            setListColor('border-b-4 border-white text-reddishLight transition-all duration-500');
+            setHomeColor('text-white');
+            setQuestionColor('text-white');
+            setAddQuestionColor('text-white');
+            setProfileColor('text-white');
+
+            navigate('list');
+
         } else if(item == 'add'){
 
-            setAddQuestionColor('border-b-4 border-reddish text-reddish transition-all duration-500')
-            setHomeColor('text-bluish');
-            setQuestionColor('text-bluish');
-            setListColor('text-bluish');
-            setProfileColor('text-bluish');
+            setAddQuestionColor('border-b-4 border-white text-reddishLight transition-all duration-500')
+            setHomeColor('text-white');
+            setQuestionColor('text-white');
+            setListColor('text-white');
+            setProfileColor('text-white');
         } else if(item == 'profile'){
 
-            setProfileColor('border-b-4 border-reddish text-reddish transition-all duration-500')
-            setHomeColor('text-bluish');
-            setQuestionColor('text-bluish');
-            setAddQuestionColor('text-bluish');
-            setListColor('text-bluish');
+            setProfileColor('border-b-4 border-white text-reddishLight transition-all duration-500')
+            setHomeColor('text-white');
+            setQuestionColor('text-white');
+            setAddQuestionColor('text-white');
+            setListColor('text-white');
+
+            navigate('/accounts')
         }
     }
 

@@ -1,0 +1,19 @@
+
+
+
+.largeScreen{
+    @apply flex lg:flex-row lg:justify-between lg:items-center  
+    flex-col gap-4
+}
+.smallGap{
+    @apply h-16
+}
+
+@media (max-width: 950px){
+    .hide{
+        @apply hidden
+    }
+    .smallGap{
+        @apply h-32
+    }
+}

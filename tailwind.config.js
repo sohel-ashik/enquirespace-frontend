@@ -12,6 +12,10 @@ export default {
             ultraBluishLight: '#113f6d73',
             reddish: '#E14D2A',
             reddishLight: '#FD841F',
+            gray1: '#91A3B9',
+            gray2: '#ced3d978',
+            gray3: '#F2F3F5',
+            customWhite: '#F3F4F7'
         }
     },
     
