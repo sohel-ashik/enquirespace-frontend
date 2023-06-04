@@ -2,13 +2,17 @@ import { useState } from 'react';
 import default_profile from '../../assets/default_avatar.png';
 import {Outlet, useNavigate} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faCartShopping} from '@fortawesome/free-solid-svg-icons'
+import {faCartShopping} from '@fortawesome/free-solid-svg-icons';
+import EditProfile from '../modals/EditProfile';
 
 export default function Profile(){
     const [clickProfile,setClickProfile] = useState('bg-reddishLight font-semibold text-white');
     const [clickQuestions,setClickQuestions] = useState('');
     const [clickAnswers, setClickAnswers] = useState('');
     const [clickSetting, setClickSetting] = useState('');
+
+    const [editProfileOpen, setEditProfileOpen] = useState(false);
+
     const navigate = useNavigate();
 
     const handleClickBtn = (btn)=>{
@@ -76,7 +80,7 @@ export default function Profile(){
                     </div>
 
                     <div className='sm:flex sm:flex-col sm:items-center sm:gap-2 items-start hidden'>
-                        <button className='bg-green-600 p-1 pl-3 pr-3 shadow-black shadow-sm rounded-md text-white mt-1'>Edit Profile</button>
+                        <button onClick={()=>setEditProfileOpen(true)} className='bg-green-600 p-1 pl-3 pr-3 shadow-black shadow-sm rounded-md text-white mt-1'>Edit Profile</button>
                         <button className='bg-reddishLight p-1 pl-3 pr-3 shadow-black shadow-sm rounded-md text-white mt-1'>
                             <FontAwesomeIcon className='text-xl pt-2 text-white lg:text-2xl' icon={faCartShopping} />
                             <div>Buy coins </div>
@@ -85,7 +89,7 @@ export default function Profile(){
                 </div>
 
                 <div className='flex w-full flex-col items-center sm:hidden'>
-                    <button className='bg-green-600 p-2 font-semibold pl-3 pr-3 w-11/12 rounded-lg text-white mt-1 '>Edit Profile</button>
+                    <button onClick={()=>setEditProfileOpen(true)} className='bg-green-600 p-2 font-semibold pl-3 pr-3 w-11/12 rounded-lg text-white mt-1 '>Edit Profile</button>
                     <button className='bg-reddishLight p-2 font-semibold pl-3 pr-3 w-11/12 rounded-lg text-white mt-1 flex justify-center items-center gap-4'>
                         <FontAwesomeIcon className='text-xl pt-2 text-white lg:text-2xl' icon={faCartShopping} />
                         <div >Buy coins </div>
@@ -102,6 +106,7 @@ export default function Profile(){
                     </div>
 
                     <Outlet/>
+                    <EditProfile open={editProfileOpen} setOpen={setEditProfileOpen}/>
 
                 </div>
 

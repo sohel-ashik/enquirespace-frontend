@@ -32,7 +32,7 @@ export default function UserProfile(){
 
                 <div className='flex items-center gap-4 text-xl'>
                     <FontAwesomeIcon className='text-2xl text-yellow-500 lg:text-3xl' icon={faCoins} />
-                    <div>Total coins: {521} </div>
+                    <div>Total coins: {14712} </div>
                 </div>
                 
                 
