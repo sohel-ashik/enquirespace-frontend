@@ -4,9 +4,14 @@ import {faHouse,faCircleQuestion, faCoins, faMagnifyingGlass, faCirclePlus, faTa
 import { useState } from 'react';
 import default_avatar from '../../assets/default_avatar.png';
 import {useNavigate} from 'react-router-dom';
+import AddPost from '../modals/AddPost';
 
 function BigNav({allState}){
-    const {search,setSearch,homeColor,questionColor,handleItemClick} = allState;
+    const {search,setSearch,
+        homeColor,
+        questionColor,
+        handleItemClick,
+        setAskOpen} = allState;
 
     return(
         <nav className={styles.nav}>
@@ -33,10 +38,14 @@ function BigNav({allState}){
                         onChange={(e)=>setSearch(e.target.value)}
                         placeholder='Search'/>
                 </div>
-                <div className='hover:scale-105 hover:cursor-pointer transition-all duration-500 w-32 bg-reddish h-8 flex justify-between items-center  pl-3 pr-2 rounded-2xl'>
+                <div 
+                    onClick={()=>setAskOpen(true)}
+                    className='hover:scale-105 hover:cursor-pointer transition-all duration-500 w-32 bg-reddish h-8 flex justify-between items-center  pl-3 pr-2 rounded-2xl'>
+
                     <p className='text-white text-xs font-bold'>Ask anything</p>
                     <FontAwesomeIcon className='text-xl' icon={faCirclePlus}/>
                 </div>
+
 
                 <div className='flex text-md items-center gap-2  p-1 bg-yellow-300 text-bluishLight pt-2 pb-2 pl-4 pr-4 rounded-3xl'>
                     <FontAwesomeIcon className='' icon={faCoins}/>
@@ -51,7 +60,15 @@ function BigNav({allState}){
 }
 
 function SmallNav({allState}){
-    const {search,setSearch,handleItemClick,homeColor,questionColor,addQuestionColor,listColor,profileColor} = allState;
+    const {
+        search,setSearch,
+        handleItemClick,
+        homeColor,
+        questionColor,
+        addQuestionColor,
+        listColor,
+        profileColor,
+        setAskOpen} = allState;
     
 
     return(
@@ -81,7 +98,7 @@ function SmallNav({allState}){
                     <FontAwesomeIcon icon={faTableList}/>
                 </div>
                 
-                <div className={` text-3xl h-full flex items-center ${addQuestionColor}`} onClick={()=>handleItemClick('add')}>
+                <div className={` text-3xl h-full flex items-center ${addQuestionColor}`} onClick={()=>{handleItemClick('add'); setAskOpen(true)}}>
                     <FontAwesomeIcon icon={faCirclePlus}/>
                 </div>
                 <div className={` text-3xl h-full flex  items-center ${profileColor}`} onClick={()=>handleItemClick('profile')}>
@@ -101,6 +118,8 @@ export default function Navigation(){
     const [addQuestionColor, setAddQuestionColor] = useState('text-white');
     const [listColor, setListColor] = useState('text-white');
     const [profileColor, setProfileColor] = useState('text-white');
+
+    const [askOpen, setAskOpen] = useState(false);
 
     // use for navigation
     const navigate = useNavigate();
@@ -161,8 +180,9 @@ export default function Navigation(){
 
     return(
         <>
-            <BigNav allState={{search,setSearch,homeColor,questionColor,handleItemClick}}/>
-            <SmallNav allState={{search,setSearch,handleItemClick,homeColor,questionColor,addQuestionColor,listColor,profileColor}}/>
+            <BigNav allState={{search,setSearch,homeColor,questionColor,handleItemClick,askOpen,setAskOpen}}/>
+            <SmallNav allState={{search,setSearch,handleItemClick,homeColor,questionColor,addQuestionColor,listColor,profileColor,askOpen,setAskOpen}}/>
+            <AddPost open={askOpen} setOpen={setAskOpen}/>
         </>
         
     )

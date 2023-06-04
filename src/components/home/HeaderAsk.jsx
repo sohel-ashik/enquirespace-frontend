@@ -2,6 +2,7 @@ import styles from './home.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import default_profile from '../../assets/default_avatar.png';
 import {faCircleQuestion, faImages } from '@fortawesome/free-regular-svg-icons';
+import { useState } from 'react';
 
 export default function(){
 
