@@ -10,6 +10,7 @@ import UserProfile from './components/profiles/details/UserProfile';
 import UserQuestions from './components/profiles/details/UserQuestions';
 import UserAnswers from './components/profiles/details/UserAnswers';
 import UserSetting from './components/profiles/details/UserSetting';
+import DetailedQuestionsWithAnswers from './components/posts/DetailedQuestionsWithAnswers';
 
 function App() {
     const auth = true;
@@ -26,6 +27,7 @@ function App() {
                         <Route path="home" element={<Home/>}/>
                         <Route path="list" element={<SideBar small={true} />}/>
                         <Route path="unsolved" element={null}/>
+                        <Route path="questions" element={<DetailedQuestionsWithAnswers/>}/>
 
                         <Route path="accounts/*" element={<Profile/>}>
                             <Route index element={<Navigate to ='profile' replace/>}/>
