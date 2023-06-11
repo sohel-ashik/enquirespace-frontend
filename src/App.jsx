@@ -11,6 +11,7 @@ import UserQuestions from './components/profiles/details/UserQuestions';
 import UserAnswers from './components/profiles/details/UserAnswers';
 import UserSetting from './components/profiles/details/UserSetting';
 import DetailedQuestionsWithAnswers from './components/posts/DetailedQuestionsWithAnswers';
+import Unsolved from './components/posts/Unsolved';
 
 function App() {
     const auth = true;
@@ -26,7 +27,7 @@ function App() {
                     <Route path='/*' element={<LandingPage/>}>
                         <Route path="home" element={<Home/>}/>
                         <Route path="list" element={<SideBar small={true} />}/>
-                        <Route path="unsolved" element={null}/>
+                        <Route path="unsolved" element={<Unsolved/>}/>
                         <Route path="questions" element={<DetailedQuestionsWithAnswers/>}/>
 
                         <Route path="accounts/*" element={<Profile/>}>

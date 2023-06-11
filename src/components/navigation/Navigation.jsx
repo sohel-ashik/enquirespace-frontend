@@ -5,6 +5,7 @@ import { useState } from 'react';
 import default_avatar from '../../assets/default_avatar.png';
 import {useNavigate} from 'react-router-dom';
 import AddPost from '../modals/AddPost';
+import BuyCoin from '../modals/BuyCoin';
 
 function BigNav({allState}){
     const {search,setSearch,
@@ -12,6 +13,8 @@ function BigNav({allState}){
         questionColor,
         handleItemClick,
         setAskOpen} = allState;
+
+    const [buyCoinOpen, setBuyCoinOpen] = useState(false);
 
     return(
         <nav className={styles.nav}>
@@ -47,10 +50,12 @@ function BigNav({allState}){
                 </div>
 
 
-                <div className='flex text-md items-center gap-2  p-1 bg-yellow-300 text-bluishLight pt-2 pb-2 pl-4 pr-4 rounded-3xl'>
-                    <FontAwesomeIcon className='' icon={faCoins}/>
-                    <p className='font-bold text-xs'>213</p>
+                <div onClick={()=>setBuyCoinOpen(true)}
+                    className='flex hover:cursor-pointer text-md items-center gap-2  p-1 bg-yellow-300 text-bluishLight pt-2 pb-2 pl-4 pr-4 rounded-3xl'>
+                        <FontAwesomeIcon className='' icon={faCoins}/>
+                        <p className='font-bold text-xs'>213</p>
                 </div>
+                <BuyCoin open={buyCoinOpen} setOpen={setBuyCoinOpen}/>
 
                 <img className='bg-white h-10 w-10 rounded-full hover:cursor-pointer' src={default_avatar} onClick={()=>handleItemClick('profile')}/>
 
@@ -140,6 +145,8 @@ export default function Navigation(){
             setAddQuestionColor('text-white');
             setListColor('text-white');
             setProfileColor('text-white');
+
+            navigate('/unsolved')
 
         }else if(item == 'refresh'){
             setHomeColor('text-white');
