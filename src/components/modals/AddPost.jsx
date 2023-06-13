@@ -1,12 +1,43 @@
 import ModalSkleton from "./ModalSkleton";
 import default_profile from '../../assets/default_avatar.png';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faEarthAmericas,faImages,faPhotoFilm,faCoins} from '@fortawesome/free-solid-svg-icons'
+import {faEarthAmericas,faImages,faPhotoFilm,faCoins,faSpinner} from '@fortawesome/free-solid-svg-icons'
 import AutosizeTextarea from 'react-textarea-autosize';
 import { useEffect, useState } from "react";
+import questionPostHandler from "../../helpers/questionPost";
+import LoadingModal from "./LoadingModals";
+
+
+const typeArr = [
+    'Science',
+    'Engineering',
+    'Environment',
+    'Technology',
+    'Mathematics',
+    'Health',
+    'Art',
+    'History',
+    'Sports',
+    'Music',
+    'Business',
+    'Politics',
+    'Literature',
+    'Food',
+    'Travel',
+    'Film',
+    'Fashion',
+    'Gaming',
+    'Education',
+    'Design',
+    'Others'
+];
+
 
 export default function AddPost({open,setOpen}){
     const [coinValue,setCoinValue] = useState(0);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [typeSelection, setTypeSelection] = useState('Others');
     
     const [imageFiles, setImageFiles] = useState([]);
     const [imageFilesURL, setImageFilesURL] = useState([]);
@@ -14,13 +45,35 @@ export default function AddPost({open,setOpen}){
     const [videoFiles, setVideoFiles] = useState([]);
     const [videoFilesURL, setVideoFilesURL] = useState([]);
 
+    const [submitLoding, setSubmitLoding] = useState(false);
+
     useEffect(()=>{
         setImageFiles([]);
         setVideoFiles([]);
         setImageFilesURL([]);
         setVideoFilesURL([]);
+        setCoinValue(0);
+        setDescription('');
+        setTitle('');
+        setTypeSelection('Others');
     },[open])
 
+    const submitHandler = async () =>{
+
+        if(title && description && typeSelection){
+            setSubmitLoding(true);
+
+            const clearence = await questionPostHandler(imageFiles,coinValue,title,description,typeSelection);
+            clearence ? alert("Uploaded successfully") : alert("Something is wrong");
+            clearence && setOpen(false);
+
+            setSubmitLoding(false);
+
+        } else{
+            alert('Fill the form perfectly !')
+        }
+
+    }
 
     const imageFileHandler = (e) =>{
         const files = e.target.files;
@@ -88,8 +141,9 @@ export default function AddPost({open,setOpen}){
                     <div className="pl-1 font-semibold">Add question title</div>
                     <AutosizeTextarea 
                         placeholder="make it short"
+                        value={title}
                         className="resize-none focus:outline-none p-3 bg-gray3 mt-2 rounded-md"
-                        onChange={(e)=>{e.target.style.height = 'auto'; e.target.style.height = `${e.target.scrollHeight}px`}}
+                        onChange={(e)=>{e.target.style.height = 'auto'; e.target.style.height = `${e.target.scrollHeight}px`; setTitle(e.target.value)}}
                     />
                 </div>
 
@@ -97,9 +151,22 @@ export default function AddPost({open,setOpen}){
                     <div className="pl-1 font-semibold">Question details</div>
                     <AutosizeTextarea 
                         placeholder="write the details"
+                        value={description}
                         className="resize-none focus:outline-none p-3 bg-gray3 mt-2 rounded-md min-h-[8rem]"
-                        onChange={(e)=>{e.target.style.height = 'auto'; e.target.style.height = `${e.target.scrollHeight}px`}}
+                        onChange={(e)=>{e.target.style.height = 'auto'; e.target.style.height = `${e.target.scrollHeight}px`; setDescription(e.target.value)}}
                     />
+                </div>
+
+                <div className="w-11/12 h-auto flex justify-between items-center pl-5 pr-5 bg-white p-1 rounded-md">
+                    <div>
+                        Select Type
+                    </div>
+                    <div className="w-1/2">
+                        <select value={typeSelection} onChange={(e)=>setTypeSelection(e.target.value)}
+                            className="block w-full bg-white border  border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-500">
+                                {typeArr.map((item)=><option value={item}>{item}</option>)}
+                        </select>
+                    </div>
                 </div>
 
                 {/* the image and video previewer */}
@@ -121,15 +188,23 @@ export default function AddPost({open,setOpen}){
                         <div>Add images</div>
                     </label>
                     <label className="hover:cursor-pointer flex items-center gap-3 h-full w-1/2 justify-center border-l-2 hover:bg-gray1 hover:text-white pt-2 lg:pt-4 pb-2 lg:pb-4 hover:rounded-md">
-                        <input type="file" className="hidden" accept="video/*" multiple name="video" onChange={videoFileHandler}/>
+                        <input disabled type="file" className="hidden" accept="video/*" multiple name="video" onChange={videoFileHandler}/>
                         <FontAwesomeIcon icon={faPhotoFilm}/>
                         <div>Add videos</div>
                     </label>
                 </div>
 
                 <div className="flex w-11/12 ">
-                    <button className="bg-bluishLight text-white w-full lg:pt-3 lg:pb-3 pt-2 pb-2 rounded-md hover:bg-bluish font-bold">Ask the question</button>
+                    <button onClick={submitHandler}
+                        className="bg-bluishLight text-white w-full lg:pt-3 lg:pb-3 pt-2 pb-2 rounded-md hover:bg-bluish font-bold">Ask the question</button>
                 </div>
+
+                {/* loading modals */}
+                <LoadingModal open={submitLoding}>
+                        <div className="p-5 text-3xl text-white rounded-lg bg-bluish">
+                            <FontAwesomeIcon icon={faSpinner} spin/>
+                        </div>
+                </LoadingModal>
 
             </div>
                 

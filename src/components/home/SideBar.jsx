@@ -24,7 +24,8 @@ export default function SideBar({small}){
         'Fashion',
         'Gaming',
         'Education',
-        'Design'
+        'Design',
+        'Others'
     ];
 
     const [fieldSearch, setFieldSearch] = useState('');
