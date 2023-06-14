@@ -1,11 +1,13 @@
 import default_profile from '../../assets/default_avatar.png';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faEarthAmericas,faImages,faPhotoFilm,faCoins} from '@fortawesome/free-solid-svg-icons'
+import {faEarthAmericas,faImages,faPhotoFilm,faCoins,faSpinner} from '@fortawesome/free-solid-svg-icons'
 import AutosizeTextarea from 'react-textarea-autosize';
 import { useEffect, useState } from "react";
+import answerPostHandler from '../../helpers/answerPost';
+import LoadingModal from '../modals/LoadingModals';
 
 export default function AddAnswer({open,setOpen}){
-    const [coinValue,setCoinValue] = useState(0);
+    const [answer, setAnswer] = useState('');
     
     const [imageFiles, setImageFiles] = useState([]);
     const [imageFilesURL, setImageFilesURL] = useState([]);
@@ -13,13 +15,25 @@ export default function AddAnswer({open,setOpen}){
     const [videoFiles, setVideoFiles] = useState([]);
     const [videoFilesURL, setVideoFilesURL] = useState([]);
 
-    useEffect(()=>{
-        setImageFiles([]);
-        setVideoFiles([]);
-        setImageFilesURL([]);
-        setVideoFilesURL([]);
-    },[open])
+    const [submitLoding,setSubmitLoding] = useState(false);
 
+    const postHandler = async () =>{
+        if(answer){
+            setSubmitLoding(true);
+            const clearence = await answerPostHandler(imageFiles,answer);
+
+            clearence ? alert('Answer posted successfully') : alert('Something is wrong!');
+            clearence && setAnswer('');
+            clearence && setImageFiles([]);
+            clearence && setImageFilesURL([]);
+            clearence && setOpen(false);
+
+            setSubmitLoding(false);
+
+        } else {
+            alert('Fill the answer box !');
+        }
+    }
 
     const imageFileHandler = (e) =>{
         const files = e.target.files;
@@ -64,8 +78,9 @@ export default function AddAnswer({open,setOpen}){
                     <div className="pl-1 font-semibold">Detailed answer</div>
                     <AutosizeTextarea 
                         placeholder="write the answer details"
+                        value={answer}
                         className="resize-none focus:outline-none p-3 bg-gray3 mt-2 rounded-md min-h-[8rem]"
-                        onChange={(e)=>{e.target.style.height = 'auto'; e.target.style.height = `${e.target.scrollHeight}px`}}
+                        onChange={(e)=>{e.target.style.height = 'auto'; e.target.style.height = `${e.target.scrollHeight}px`;setAnswer(e.target.value)}}
                     />
                 </div>
 
@@ -83,20 +98,28 @@ export default function AddAnswer({open,setOpen}){
 
                 <div className="w-11/12 h-auto flex justify-evenly  bg-white p-1 rounded-md">
                     <label className="hover:cursor-pointer flex items-center gap-3 h-full w-1/2 justify-center border-r-2 hover:bg-gray1 hover:text-white pt-2 lg:pt-4 pb-2 lg:pb-4 hover:rounded-md">
-                        <input type="file" accept="image/*" className="hidden" multiple name="image" onChange={imageFileHandler}/>
+                        <input  type="file" accept="image/*" className="hidden" multiple name="image" onChange={imageFileHandler}/>
                         <FontAwesomeIcon icon={faImages}/>
                         <div>Add images</div>
                     </label>
                     <label className="hover:cursor-pointer flex items-center gap-3 h-full w-1/2 justify-center border-l-2 hover:bg-gray1 hover:text-white pt-2 lg:pt-4 pb-2 lg:pb-4 hover:rounded-md">
-                        <input type="file" className="hidden" accept="video/*" multiple name="video" onChange={videoFileHandler}/>
+                        <input disabled type="file" className="hidden" accept="video/*" multiple name="video" onChange={videoFileHandler}/>
                         <FontAwesomeIcon icon={faPhotoFilm}/>
                         <div>Add videos</div>
                     </label>
                 </div>
 
                 <div className="flex w-11/12 ">
-                    <button className="bg-bluishLight text-white w-full lg:pt-3 lg:pb-3 pt-2 pb-2 rounded-md hover:bg-bluish font-bold">Post the answer</button>
+                    <button onClick={postHandler} 
+                        className="bg-bluishLight text-white w-full lg:pt-3 lg:pb-3 pt-2 pb-2 rounded-md hover:bg-bluish font-bold">Post the answer</button>
                 </div>
+
+                {/* loading modals */}
+                <LoadingModal open={submitLoding && open}>
+                    <div className="p-5 text-3xl text-white rounded-lg bg-bluish">
+                        <FontAwesomeIcon icon={faSpinner} spin/>
+                    </div>
+                </LoadingModal>
 
             </div>
         </div>

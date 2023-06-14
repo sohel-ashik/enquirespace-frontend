@@ -2,7 +2,7 @@ import {imgBB_API,base_API_url} from '../credentials/credentialsConfig.js';
 import imageUploader from './photoUploader.js';
 
 
-export default  async function questionPostHandler(imageFiles,coins, title, details, type){
+export default async function answerPostHandler(imageFiles,answer){
     const imgSrcArr = [];
     let imgUploadClearence = true;
 
@@ -23,12 +23,9 @@ export default  async function questionPostHandler(imageFiles,coins, title, deta
     }
 
     if(imgUploadClearence){
-        const api = `${base_API_url}/home/ask`;
+        const api = `${base_API_url}/home/post/answer`;
         const data = {
-            coins: Number(coins),
-            title,
-            details,
-            type,
+            answer,
             imgSrcArr
         }
 
@@ -57,4 +54,5 @@ export default  async function questionPostHandler(imageFiles,coins, title, deta
     }else{
         return false;
     }
+
 }

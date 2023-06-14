@@ -11,7 +11,7 @@ export default function ModalSkleton({open, onClose, children, }){
 
     return(
         <div 
-            className={`fixed inset-0 flex justify-center items-center backdrop-blur-sm transition-opacity duration-700  ${open ? "visible opacity-100 bg-black/60": "invisible opacity-0"}`}>
+            className={`fixed z-50 inset-0 flex justify-center items-center backdrop-blur-sm transition-opacity duration-700  ${open ? "visible opacity-100 bg-black/60": "invisible opacity-0"}`}>
             <div onClick={(e)=>e.stopPropagation()}>
 
                 <div className='w-screen flex justify-center h-screen items-center ' onClick={onClose}>

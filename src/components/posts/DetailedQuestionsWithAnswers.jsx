@@ -119,7 +119,7 @@ export default function DetailedQuestionsWithAnswers(){
                     <Attachments/>
                     <BottomLegend setAnswerOpne={setAnswerOpne}/>
                     <div className={`w-full h-fit border border-gray-700 rounded-xl pb-4 ${!answerOpen ? 'hidden' : ''}`}>
-                        <AddAnswer open={answerOpen}/>
+                        <AddAnswer open={answerOpen} setOpen={setAnswerOpne}/>
                     </div>
                 </div>
 

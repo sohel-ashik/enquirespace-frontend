@@ -201,9 +201,9 @@ export default function AddPost({open,setOpen}){
 
                 {/* loading modals */}
                 <LoadingModal open={submitLoding}>
-                        <div className="p-5 text-3xl text-white rounded-lg bg-bluish">
-                            <FontAwesomeIcon icon={faSpinner} spin/>
-                        </div>
+                    <div className="p-5 text-3xl text-white rounded-lg bg-bluish">
+                        <FontAwesomeIcon icon={faSpinner} spin/>
+                    </div>
                 </LoadingModal>
 
             </div>
