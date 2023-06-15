@@ -1,19 +1,45 @@
 import { useState } from 'react';
 import styles from './signup_login.module.css';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faSpinner} from '@fortawesome/free-solid-svg-icons'
 import Common from './Login_Signup_common';
+import LoadingModal from '../modals/LoadingModals';
+import signupPost from '../../helpers/signupPost';
+import confirmationCodePost from '../../helpers/confirmatinCodePost';
+
 
 function MailAuthCode({mail}){
     const [code,setCode] = useState('');
     const [nameFocus,setNameFocus] = useState('tranborder-gray-300');
+    const [loading, setLoading] = useState(false);
+
+
+    const submitHandlerConfirm = async (e)=>{
+        e.preventDefault();
+        setLoading(true);
+        const clearence = await confirmationCodePost(code,mail);
+        setLoading(false);
+
+        if(clearence){
+            alert('New User has been created')
+        }else{
+            setCode('');
+            alert('Wrong code/ Registered');
+        }
+    }
 
     return(
-        <form className={styles.login_form}>
-            <div className='pt-10 flex gap-2 justify-center' style={{fontWeight:'bold',fontSize:'14px'}}>A code has been Send to <p className='text-red-600'>{`${mail}.`}</p></div>
+        <form className={styles.login_form} onSubmit={(e)=>submitHandlerConfirm(e)}>
+            <div className='flex flex-col pt-10 items-center'>
+                <div className=' text-lg'>A code has been Send to</div>
+                <div className='justify-center font-bold text-red-500'>{mail}</div>
+            </div>
             <fieldset className={`transition-all duration-1000 border-2 rounded-lg pl-4 ${nameFocus}`}>
                 <legend className={`text-sm text-black`}>Code</legend>
                 <input 
                     className={styles.inputs}
-                    type="text" 
+                    type="number"
+                    max="9999"
                     value={code}
                     onChange={(e)=>setCode(e.target.value)}
                     onFocus={()=>setNameFocus('border-black  text-black')}
@@ -25,6 +51,12 @@ function MailAuthCode({mail}){
                 className='text-white rounded-md h-12 mt-4 bg-blue-950 hover:bg-black' 
                 value='submit'
                 >Submit</button>
+
+            <LoadingModal open={loading}>
+                <div className="p-5 text-3xl text-white rounded-lg bg-bluish">
+                    <FontAwesomeIcon icon={faSpinner} spin/>
+                </div>
+            </LoadingModal>
         </form>
     )
 }
@@ -41,11 +73,25 @@ function SignUpForm({setConfirmed,setConfirmedMail}){
 
     const [emailErrorMsg, setEmailErrorMsg] = useState('');
     const [passErrorMsg,setPassErrorMsg] = useState('');
+    const [loading,setLoading] = useState(false);
+
+    const submitHandler = async (e) =>{
+        e.preventDefault();
+        setLoading(true);
+        const clearence = await signupPost(name,email,pass);
+        setLoading(false);
+
+        if(clearence){
+            setConfirmed(true)
+            setConfirmedMail(email);
+        }else{
+            alert('Something is wrong')
+        }
+    }
 
     return(
-        <form className={styles.login_form} onSubmit={()=>{
-            setConfirmed(true);
-            setConfirmedMail(email);
+        <form className={styles.login_form} onSubmit={(e)=>{
+            submitHandler(e);
         }}>
             <fieldset className={`transition-all duration-1000 border-2 rounded-lg pl-4 ${nameFocus}`}>
                 <legend className={`text-sm text-black`}>Name</legend>
@@ -97,6 +143,12 @@ function SignUpForm({setConfirmed,setConfirmedMail}){
                 className='text-white rounded-md h-12 mt-4 bg-blue-950 hover:bg-black' 
                 value='submit'
                 >Sign up</button>
+
+            <LoadingModal open={loading}>
+                <div className="p-5 text-3xl text-white rounded-lg bg-bluish">
+                    <FontAwesomeIcon icon={faSpinner} spin/>
+                </div>
+            </LoadingModal>
         </form>
     )
 }
