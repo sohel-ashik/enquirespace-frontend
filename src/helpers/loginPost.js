@@ -1,10 +1,10 @@
 import {base_API_url} from '../credentials/credentialsConfig';
 
-export default async function signupPost(code,mail){
-    const api = `${base_API_url}/signup/confirmcode`;
+export default async function loginPost(mail,pass){
+    const api = `${base_API_url}/login`;
     const data = {
-        code,
-        mail
+        mail,
+        pass
     }
 
     try{

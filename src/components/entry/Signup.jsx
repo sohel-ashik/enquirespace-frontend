@@ -1,18 +1,21 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './signup_login.module.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
-import Common from './Login_Signup_common';
 import LoadingModal from '../modals/LoadingModals';
+import Common from './Login_Signup_common';
 import signupPost from '../../helpers/signupPost';
 import confirmationCodePost from '../../helpers/confirmatinCodePost';
+import AuthContext from '../../contexts/AuthContext';
+import {useNavigate} from 'react-router-dom'
 
 
 function MailAuthCode({mail}){
     const [code,setCode] = useState('');
     const [nameFocus,setNameFocus] = useState('tranborder-gray-300');
     const [loading, setLoading] = useState(false);
-
+    const contextValue = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const submitHandlerConfirm = async (e)=>{
         e.preventDefault();
@@ -21,7 +24,11 @@ function MailAuthCode({mail}){
         setLoading(false);
 
         if(clearence){
-            alert('New User has been created')
+            
+            localStorage.setItem('token',clearence.token);
+            contextValue.setAuth(true);
+            //navigate directly home page
+            navigate('/home')
         }else{
             setCode('');
             alert('Wrong code/ Registered');

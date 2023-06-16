@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import styles from './signup_login.module.css';
 import Common from './Login_Signup_common';
+import loginPost from '../../helpers/loginPost';
+import { useContext } from 'react';
+import {useNavigate} from 'react-router-dom';
+import AuthContext from '../../contexts/AuthContext';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faSpinner} from '@fortawesome/free-solid-svg-icons'
+import LoadingModal from '../modals/LoadingModals';
 
 export default function Login(){
     const [email,setEmail] = useState('');
@@ -12,6 +19,29 @@ export default function Login(){
     const [emailErrorMsg, setEmailErrorMsg] = useState('');
     const [passErrorMsg,setPassErrorMsg] = useState('');
 
+    const [loading, setLoading] = useState(false);
+    const contextValue = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    async function submitHandler(e) {
+        e.preventDefault();
+
+        setLoading(true);
+        const clearence = await loginPost(email,pass);
+        setLoading(false);
+
+        if(clearence){
+            localStorage.setItem('token',clearence.token);
+            console.log(clearence);
+            contextValue.setAuth(true);
+
+            //navigate directly home page
+            navigate('/home')
+        }else{
+            alert('Login faild');
+        }
+    }
+
     return(
         <div className={styles.parent}>
             <div className={styles.main_container}>
@@ -21,7 +51,7 @@ export default function Login(){
                     
                     <Common.Direct_Login />
 
-                    <form className={styles.login_form}>
+                    <form className={styles.login_form} onSubmit={(e)=>submitHandler(e)}>
 
                         <fieldset className={`transition-all duration-1000 border-2 rounded-lg pl-4 ${emailFocus}`}>
                             <legend className={`text-sm text-black`}>Email</legend>
@@ -64,6 +94,12 @@ export default function Login(){
 
                     <Common.Bottom msg="Don't have an account?" link='Sign up' path='/signup'/>
                 </div>
+
+                <LoadingModal open={loading}>
+                    <div className="p-5 text-3xl text-white rounded-lg bg-bluish">
+                        <FontAwesomeIcon icon={faSpinner} spin/>
+                    </div>
+                </LoadingModal>
                 
             </div>
         </div>

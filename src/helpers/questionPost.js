@@ -24,12 +24,14 @@ export default  async function questionPostHandler(imageFiles,coins, title, deta
 
     if(imgUploadClearence){
         const api = `${base_API_url}/home/ask`;
+        const token = localStorage.getItem('token');
         const data = {
             coins: Number(coins),
             title,
             details,
             type,
-            imgSrcArr
+            imgSrcArr,
+            token
         }
 
         try{
