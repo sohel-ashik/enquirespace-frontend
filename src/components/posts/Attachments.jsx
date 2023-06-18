@@ -1,13 +1,7 @@
 import { useState } from "react";
-import x1 from '../../assets/img1.jpg'
-import x2 from '../../assets/img2.jpg'
-import x3 from '../../assets/img3.jpg'
-import x4 from '../../assets/img4.jpg'
-import x5 from '../../assets/img5.jpg'
 
-const allImg = [x1,x2,x3,x4,x5];
-
-export default function Attachments(){
+export default function Attachments({picArr= [],vidArr=[]}){
+    
     const [selectedImage, setSelectedImage] = useState(null);
     const handleImageClick = (imagePath) => {
         setSelectedImage(imagePath);
@@ -19,7 +13,7 @@ export default function Attachments(){
 
     return(
         <div className="pb-3 grid grid-cols-1 sm:grid-cols-2  gap-4 p-1">
-            {allImg.map((img) => (
+            {picArr.map((img) => (
                 <div key={img} className="relative">
                 <img
                     onClick={() => handleImageClick(img)}

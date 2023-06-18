@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCartShopping} from '@fortawesome/free-solid-svg-icons';
 import EditProfile from '../modals/EditProfile';
 import BuyCoin from '../modals/BuyCoin';
+import { useEffect } from 'react';
+import { base_API_url } from '../../credentials/credentialsConfig';
 
 export default function Profile(){
     const [clickProfile,setClickProfile] = useState('bg-reddishLight font-semibold text-white');
@@ -14,6 +16,38 @@ export default function Profile(){
 
     const [editProfileOpen, setEditProfileOpen] = useState(false);
     const [buyCoinOpen, setBuyCoinOpen] = useState(false);
+
+    const [userProfile,setUserProfile] = useState({});
+
+    useEffect(()=>{
+        const token = localStorage.getItem('token');
+        async function fetchData(){
+            try{
+                const response = await fetch(`${base_API_url}/accounts/profile`,{
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': token
+                    }
+                })
+                if(!response.ok){
+                    console.log('Error');
+                }else{
+                    const data = await response.json();
+                    const {name,designation,joinedDate,profilePic} = data;
+                    const dateObj = new Date(joinedDate);
+                    const formattJoinedDate = dateObj.toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'});
+    
+                    setUserProfile({name,designation,formattJoinedDate,profilePic});
+                }
+
+            }catch(err){
+                console.log(err);
+            }
+        }
+
+        fetchData();
+    })
 
     const navigate = useNavigate();
 
@@ -71,12 +105,12 @@ export default function Profile(){
                     <div className='flex gap-3 md:gap-5'>
                         <img
                             className='h-20 w-20 md:h-36 md:w-36 rounded-2xl' 
-                            src={default_profile}/>
+                            src={userProfile.profilePic ? userProfile.profilePic : default_profile}/>
                         <div className='flex flex-col md:gap-5 gap-2'>
-                            <p className='md:text-4xl text-xl font-bold'>Sohel Siddique Ashik</p>
+                            <p className='md:text-4xl text-xl font-bold'>{userProfile.name}</p>
                             <div>
-                                <p className='md:text-lg'>Software Engineer</p>
-                                <p className='md:text-md text-xs text-gray-400'>Joined 28 May,2017</p>
+                                <p className='md:text-lg'>{userProfile.designation}</p>
+                                <p className='md:text-md text-xs text-gray-400'>Joined {userProfile.formattJoinedDate}</p>
                             </div>
                         </div>
                     </div>
