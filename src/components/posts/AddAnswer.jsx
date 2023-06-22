@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import answerPostHandler from '../../helpers/answerPost';
 import LoadingModal from '../modals/LoadingModals';
 
-export default function AddAnswer({open,setOpen}){
+export default function AddAnswer({open,setOpen,questionId}){
     const [answer, setAnswer] = useState('');
     
     const [imageFiles, setImageFiles] = useState([]);
@@ -20,7 +20,7 @@ export default function AddAnswer({open,setOpen}){
     const postHandler = async () =>{
         if(answer){
             setSubmitLoding(true);
-            const clearence = await answerPostHandler(imageFiles,answer);
+            const clearence = await answerPostHandler(imageFiles,answer,questionId);
 
             clearence ? alert('Answer posted successfully') : alert('Something is wrong!');
             clearence && setAnswer('');

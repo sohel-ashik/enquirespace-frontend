@@ -6,6 +6,7 @@ import AutosizeTextarea from 'react-textarea-autosize';
 import { useEffect, useState } from "react";
 import questionPostHandler from "../../helpers/questionPost";
 import LoadingModal from "./LoadingModals";
+import { base_API_url } from "../../credentials/credentialsConfig";
 
 
 const typeArr = [
@@ -35,6 +36,7 @@ const typeArr = [
 
 export default function AddPost({open,setOpen}){
     const [coinValue,setCoinValue] = useState(0);
+    const [userProfile,setUserProfile] = useState({});
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [typeSelection, setTypeSelection] = useState('Others');
@@ -56,6 +58,33 @@ export default function AddPost({open,setOpen}){
         setDescription('');
         setTitle('');
         setTypeSelection('Others');
+
+        const token = localStorage.getItem('token');
+        async function fetchData(){
+            try{
+                const response = await fetch(`${base_API_url}/accounts/profile`,{
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': token
+                    }
+                })
+                if(!response.ok){
+                    console.log('Error');
+                }else{
+                    const data = await response.json();
+                    const {name,profilePic,totalCoins} = data;
+
+                    setUserProfile({name,profilePic,totalCoins});
+                }
+
+            }catch(err){
+                console.log(err);
+            }
+        }
+
+        fetchData();
+
     },[open])
 
     const submitHandler = async () =>{
@@ -111,9 +140,9 @@ export default function AddPost({open,setOpen}){
 
             <div className="flex justify-between pl-5 pr-5 lg:pr-7 items-center">
                 <div className="flex gap-4 pt-4 ">
-                    <img className="h-12 w-12 md:h-16 md:w-16 rounded-full" src={default_profile}/>
+                    <img className="h-12 w-12 md:h-16 md:w-16 rounded-full" src={userProfile.profilePic ? userProfile.profilePic : default_profile}/>
                     <div className="md:text-lg flex flex-col justify-center" >
-                        <div className="font-semibold">Sohel Ashik</div>
+                        <div className="font-semibold">{userProfile.name}</div>
                         <div className="flex gap-2 items-center text-gray-500">
                             <FontAwesomeIcon icon={faEarthAmericas}/>
                             <div >Public</div>
@@ -129,7 +158,7 @@ export default function AddPost({open,setOpen}){
                     <input 
                         type='range'  
                         min={0}
-                        max={100}
+                        max={userProfile.totalCoins}
                         value={coinValue}
                         onChange={(e)=>setCoinValue(e.target.value)}
                         disabled={false} />

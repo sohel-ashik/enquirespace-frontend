@@ -2,7 +2,7 @@ import {imgBB_API,base_API_url} from '../credentials/credentialsConfig.js';
 import imageUploader from './photoUploader.js';
 
 
-export default async function answerPostHandler(imageFiles,answer){
+export default async function answerPostHandler(imageFiles,answer,questionId){
     const imgSrcArr = [];
     let imgUploadClearence = true;
 
@@ -28,6 +28,7 @@ export default async function answerPostHandler(imageFiles,answer){
         const data = {
             answer,
             imgSrcArr,
+            questionId,
             token
         }
 
@@ -36,6 +37,7 @@ export default async function answerPostHandler(imageFiles,answer){
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'token' : token
                 },
                 body: JSON.stringify(data)
             })

@@ -122,7 +122,7 @@ export default function DetailedQuestionsWithAnswers(){
                     <Attachments picArr={details.imageList} vidArr={details.videoList}/>
                     <BottomLegend setAnswerOpne={setAnswerOpne} views={details.views} totalUp={details.totalUpVotes} totalDown={details.totalDownVotes}/>
                     <div className={`w-full h-fit border border-gray-700 rounded-xl pb-4 ${!answerOpen ? 'hidden' : ''}`}>
-                        <AddAnswer open={answerOpen} setOpen={setAnswerOpne}/>
+                        <AddAnswer open={answerOpen} setOpen={setAnswerOpne} questionId={details._id}/>
                     </div>
                 </div>
 
@@ -135,10 +135,7 @@ export default function DetailedQuestionsWithAnswers(){
                             <DropdownSelect/>
                         </div>
                     </div>
-                    <Answer/>
-                    <Answer/>
-                    <Answer/>
-                    <Answer/>
+                    {details.answerList.map((ele)=><Answer details={ele} />)}
 
                 </div>
                 

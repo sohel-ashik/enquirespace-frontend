@@ -5,17 +5,46 @@ import CompactPost from '../posts/CompactPost';
 import HeaderAsk from './HeaderAsk';
 import styles from './home.module.css';
 import SideBar from './SideBar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { useEffect } from 'react';
+import { base_API_url } from '../../credentials/credentialsConfig';
 
 
 export default function(){
-    const arr = [
-        'Science',
-        'Engineering',
-        'Environment',
-        'Technology',
-        'Mathematics',
-        'Health'
-      ];
+    const [postArr,setPostArr] = useState([]);
+    const [load, setLoad] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    async function fetchData(){
+        const token = localStorage.getItem('token');
+        try{
+            setLoading(true);
+            const response = await fetch(`${base_API_url}/home`,{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token
+                }
+            })
+            setLoading(false);
+            if(!response.ok){
+                console.log('Error');
+            }else{
+                const data = await response.json();
+                const tempData = [...postArr, ...data.data];
+                setPostArr(tempData);
+
+            }
+
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    useEffect(()=>{
+        fetchData();
+    },[load])
 
     const [open, setOpen] = useState(false);
 
@@ -36,9 +65,20 @@ export default function(){
                         
                         {/* here goes the all content */}
 
-                        {arr.map((ele)=><CompactPost/>)}
+                        {postArr.map((ele)=>{
+                            const {name,profilePic} = ele.askerId;
+                            return <CompactPost name={name} profilePic={profilePic} details={ele}/>;
+                        })}
 
                     </div>
+                    <div className='lg:w-4/5 w-full h-fit flex justify-center p-10'> {/**/}
+                        <button onClick={()=>setLoad(!load)}
+                            className='bg-reddishLight pl-5 pr-5 p-2 rounded-md text-white'>
+                                {!loading && 'Load more...'}
+                                {loading && <FontAwesomeIcon icon={faSpinner} spin/>}
+                            </button>
+                    </div>
+
                 </div>
                 
             </div>

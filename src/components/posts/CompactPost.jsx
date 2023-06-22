@@ -56,7 +56,7 @@ export default function CompactPost({name,profilePic, details={},viewer}){
                 {/* bg-reddishLight */}
                 <div className='flex gap-5'>
                     {!viewer && <div className='bg-bluishLight pl-5 pr-5 pt-1 pb-1 rounded-xl text-white font-semibold shadow-sm shadow-black hidden lg:block'>
-                            <div>Answer</div>
+                            <div onClick={()=>navigate('/questions', {state : {name,profilePic,details}})}>Answer</div>
                         </div>}
                     {details.solved && <div className='bg-green-600 pl-2 pr-2 pt-1 pb-1 rounded-xl text-white font-semibold shadow-sm shadow-black'>
                         <div>Solved</div>
@@ -69,7 +69,7 @@ export default function CompactPost({name,profilePic, details={},viewer}){
             </div>
 
             {!viewer && <div className='w-full h-10 bg-bluishLight text-white rounded-lg flex justify-center items-center text-lg font-semibold lg:hidden'>
-               <div>Answer this question</div>
+               <div onClick={()=>navigate('/questions', {state : {name,profilePic,details}})}>Answer this question</div>
             </div>}
         </div>
     )
