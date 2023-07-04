@@ -5,6 +5,7 @@ import AutosizeTextarea from 'react-textarea-autosize';
 import { useEffect, useState } from "react";
 import answerPostHandler from '../../helpers/answerPost';
 import LoadingModal from '../modals/LoadingModals';
+import { base_API_url } from '../../credentials/credentialsConfig';
 
 export default function AddAnswer({open,setOpen,questionId}){
     const [answer, setAnswer] = useState('');
@@ -16,13 +17,43 @@ export default function AddAnswer({open,setOpen,questionId}){
     const [videoFilesURL, setVideoFilesURL] = useState([]);
 
     const [submitLoding,setSubmitLoding] = useState(false);
+    const [profilePic,setProfilePic] = useState('');
+
+    useEffect(()=>{
+        const token = localStorage.getItem('token');
+
+        const fetchData = async ()=>{
+            try{
+                const response = await fetch(`${base_API_url}/accounts/profile`,{
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': token
+                    }
+                })
+                if(!response.ok){
+                    console.log('Error');
+                }else{
+                    const data = await response.json();
+                    const {name,profilePic} = data;
+                    setProfilePic(profilePic);
+                }
+
+            }catch(err){
+                console.log(err);
+            }
+        }
+
+        fetchData();
+    },[])
 
     const postHandler = async () =>{
         if(answer){
             setSubmitLoding(true);
             const clearence = await answerPostHandler(imageFiles,answer,questionId);
 
-            clearence ? alert('Answer posted successfully') : alert('Something is wrong!');
+            clearence ? console.log('Answer added successfully') : alert('Something is wrong!');
+            // clearence && window.location.reload();
             clearence && setAnswer('');
             clearence && setImageFiles([]);
             clearence && setImageFilesURL([]);
@@ -69,7 +100,7 @@ export default function AddAnswer({open,setOpen,questionId}){
             <div className="text-center pt-5 md:pt-8 text-xl md:text-2xl font-semibold pb-3">Make an answer</div>
 
             <div className="flex justify-center items-center">
-                    <img className="h-10 w-10 md:h-12 md:w-12 rounded-full" src={default_profile}/>
+                    <img className="h-10 w-10 md:h-12 md:w-12 rounded-full" style={{objectFit:'cover'}} src={profilePic ? profilePic : default_profile}/>
             </div>
 
             <div  className="w-full flex flex-col justify-center items-center gap-3 pt-5">

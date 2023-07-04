@@ -3,7 +3,7 @@ import styles from './signup_login.module.css';
 import Common from './Login_Signup_common';
 import loginPost from '../../helpers/loginPost';
 import { useContext } from 'react';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import AuthContext from '../../contexts/AuthContext';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
@@ -18,6 +18,7 @@ export default function Login(){
 
     const [emailErrorMsg, setEmailErrorMsg] = useState('');
     const [passErrorMsg,setPassErrorMsg] = useState('');
+
 
     const [loading, setLoading] = useState(false);
     const contextValue = useContext(AuthContext);
@@ -93,6 +94,7 @@ export default function Login(){
                     </form>
 
                     <Common.Bottom msg="Don't have an account?" link='Sign up' path='/signup'/>
+                    <div ><Common.Bottom link="Forget password"/></div>
                 </div>
 
                 <LoadingModal open={loading}>

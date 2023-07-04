@@ -6,9 +6,12 @@ import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import { useEffect } from 'react';
 import { base_API_url } from '../../../credentials/credentialsConfig';
 import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 
 export default function UserProfile(){
 
+    const context = useOutletContext();
+    
     const [profileDetails, setProfileDetails] = useState({});
     
     useEffect(()=>{
@@ -20,7 +23,8 @@ export default function UserProfile(){
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'token': token
+                        'token': token,
+                        'profileId': context.profileId
                     }
                 })
                 if(!response.ok){

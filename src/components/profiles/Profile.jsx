@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import default_profile from '../../assets/default_avatar.png';
-import {Outlet, useNavigate} from 'react-router-dom';
+import {Outlet, useLocation, useNavigate} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCartShopping} from '@fortawesome/free-solid-svg-icons';
 import EditProfile from '../modals/EditProfile';
@@ -19,7 +19,13 @@ export default function Profile(){
 
     const [userProfile,setUserProfile] = useState({});
 
+    const location = useLocation();
+    const [profileId,setProfileId] = useState({});
+
     useEffect(()=>{
+        const userId = location.state ? location.state.userId : '';
+        setProfileId(userId);
+        
         const token = localStorage.getItem('token');
         async function fetchData(){
             try{
@@ -27,18 +33,19 @@ export default function Profile(){
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'token': token
+                        'token': token,
+                        'profileid': userId
                     }
                 })
                 if(!response.ok){
                     console.log('Error');
                 }else{
                     const data = await response.json();
-                    const {name,designation,joinedDate,profilePic} = data;
+                    const {name,designation,joinedDate,profilePic,totalCoins} = data;
                     const dateObj = new Date(joinedDate);
                     const formattJoinedDate = dateObj.toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'});
     
-                    setUserProfile({name,designation,formattJoinedDate,profilePic});
+                    setUserProfile({name,designation,formattJoinedDate,profilePic,totalCoins});
                 }
 
             }catch(err){
@@ -47,7 +54,7 @@ export default function Profile(){
         }
 
         fetchData();
-    })
+    },[])
 
     const navigate = useNavigate();
 
@@ -99,12 +106,12 @@ export default function Profile(){
 
     return(
         <div className="w-full h-full overflow-auto flex  justify-center p-3 bg-gray3">
-            <div className="w-full lg:w-9/12 h-fit pb-10 bg-white rounded-lg">
+            <div className="w-full lg:w-9/12 h-fit pb-10 bg-white rounded-lg"> 
 
                 <div className="w-full h-fit lg:pt-8 pt-3 p-3 lg:pl-6 lg:pr-6 flex justify-between">
                     <div className='flex gap-3 md:gap-5'>
                         <img
-                            className='h-20 w-20 md:h-36 md:w-36 rounded-2xl' 
+                            className='h-20 w-20 md:h-36 md:w-36 rounded-2xl' style={{objectFit: 'cover'}}
                             src={userProfile.profilePic ? userProfile.profilePic : default_profile}/>
                         <div className='flex flex-col md:gap-5 gap-2'>
                             <p className='md:text-4xl text-xl font-bold'>{userProfile.name}</p>
@@ -116,12 +123,12 @@ export default function Profile(){
                     </div>
 
                     <div className='sm:flex sm:flex-col sm:items-center sm:gap-2 items-start hidden'>
-                        <button onClick={()=>setEditProfileOpen(true)} className='bg-green-600 p-1 pl-3 pr-3 shadow-black shadow-sm rounded-md text-white mt-1'>Edit Profile</button>
-                        <button onClick={()=>setBuyCoinOpen(true)}
+                        {!profileId && <button onClick={()=>setEditProfileOpen(true)} className='bg-green-600 p-1 pl-3 pr-3 shadow-black shadow-sm rounded-md text-white mt-1'>Edit Profile</button>}
+                        {!profileId && <button onClick={()=>setBuyCoinOpen(true)}
                          className='bg-reddishLight p-1 pl-3 pr-3 shadow-black shadow-sm rounded-md text-white mt-1'>
                             <FontAwesomeIcon className='text-xl pt-2 text-white lg:text-2xl' icon={faCartShopping} />
                             <div>Buy coins </div>
-                        </button>
+                        </button>}
                     </div>
                 </div>
 
@@ -134,7 +141,7 @@ export default function Profile(){
                     </button>
                 </div>
 
-                <BuyCoin open={buyCoinOpen} setOpen={setBuyCoinOpen}/>
+                <BuyCoin open={buyCoinOpen} setOpen={setBuyCoinOpen} coins={userProfile.totalCoins}/>
 
 
                 <div className='w-full h-fit mt-5 rounded-md sm:pl-4 sm:pr-4 pl-2 pr-2'>
@@ -145,7 +152,7 @@ export default function Profile(){
                         <button className={`p-1 pl-3 pr-3 sm:p-1 sm:pl-5 sm:pr-5  rounded-2xl border border-gray-400 hover:bg-reddishLight hover:font-semibold shadow-sm shadow-gray-500 ${clickSetting}`} onClick={()=>handleClickBtn('setting')}>Setting</button>
                     </div>
 
-                    <Outlet/>
+                    <Outlet context={{profileId}}/>
                     <EditProfile open={editProfileOpen} setOpen={setEditProfileOpen}/>
 
                 </div>

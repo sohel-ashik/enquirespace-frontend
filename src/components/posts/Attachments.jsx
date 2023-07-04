@@ -24,7 +24,7 @@ export default function Attachments({picArr= [],vidArr=[]}){
             
 
             {/* image modals */}
-            <div onClick={handleCloseModal} className={`fixed inset-0 flex justify-center items-center transition-colors  ${selectedImage ? "visible bg-black/75" : "invisible"}`}>
+            <div onClick={handleCloseModal} className={`fixed inset-0 z-50 flex justify-center items-center transition-colors  ${selectedImage ? "visible bg-black/75" : "invisible"}`}>
                     <img
                         // onClick={(e)=>e.stopPropagation()}
                         src={selectedImage}

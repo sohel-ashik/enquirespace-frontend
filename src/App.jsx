@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 
 function App() {
     const [auth,setAuth] = useState(false);
+    const [hitRefresh, setHitRefresh] = useState(false);
 
     useEffect(()=>{
         const token = localStorage.getItem('token');
@@ -26,7 +27,7 @@ function App() {
     },[])
 
     return (
-            <AuthContext.Provider value={{auth,setAuth}}>
+            <AuthContext.Provider value={{auth,setAuth, hitRefresh, setHitRefresh}}>
                 <BrowserRouter>
                         <Routes>
                             <Route path='/' element={auth ? <Navigate to='/home'/> : <Navigate to='/login'/>}/>

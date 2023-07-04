@@ -2,18 +2,38 @@ import default_profile from '../../assets/default_avatar.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCoins,faCaretUp,faCaretDown,faCheckDouble} from '@fortawesome/free-solid-svg-icons';
 import {useNavigate} from 'react-router-dom'
+import { base_API_url } from '../../credentials/credentialsConfig';
 
-export default function CompactPost({name,profilePic, details={},viewer}){
+export default function CompactPost({name,profilePic, details={},viewer,access}){
+    const questionId = details._id;
+    const userId = details.askerId._id;
     const dateObj = new Date(details.postDate);
     const postDate = dateObj.toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'});
-    
     const navigate = useNavigate();
+
+    const viewAdder = async ()=>{
+        const token = localStorage.getItem('token');
+        try{
+            const response = await fetch(`${base_API_url}/home/viewadder`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token,
+                    'questionid': questionId
+                }
+            })
+        }catch(err){
+            console.log(err);
+        }
+    }
 
     return(
         <div className="w-full h-fit bg-gray2 rounded-md flex flex-col items-center shadow-lg shadow-gray-400 ">
             <div className="p-2 lg:p-4 w-full h-fit flex justify-between">
-                <div className='flex gap-2 items-center'>
-                    <img src={profilePic ? profilePic : default_profile} className='lg:h-12 lg:w-12 h-10 w-10 rounded-full'/>
+                <div className='flex gap-2 items-center hover:cursor-pointer' onClick={()=>{
+                    navigate('/accounts',{state: {userId: userId}})
+                }}>
+                    <img src={profilePic ? profilePic : default_profile} style={{objectFit: 'cover'}} className='lg:h-12 lg:w-12 h-10 w-10 rounded-full'/>
                     <div className='flex flex-col justify-center'>
                         <div className='font-bold lg:text-lg'>{name}</div>
                         <div className='text-xs'>{postDate}</div>
@@ -27,7 +47,10 @@ export default function CompactPost({name,profilePic, details={},viewer}){
 
             <hr className='border-gray-600 my-2 w-11/12 '/>
 
-            <div onClick={()=>navigate('/questions', {state : {name,profilePic,details}})}
+            <div onClick={()=>{
+                navigate('/questions', {state : {name,profilePic,questionId,viewer: viewer && !details.solved,userId:`${userId ? userId : details.askerId}`,access }});
+                viewAdder();
+            }}
              className='flex flex-col w-full p-2 lg:p-4 gap-3 lg:gap-5 pb-4 hover:cursor-pointer'>
                 <div className='text-bluish font-bold text-lg lg:text-2xl'>
                     {details.title}
@@ -50,13 +73,13 @@ export default function CompactPost({name,profilePic, details={},viewer}){
                     </div>
                     <div className='flex items-center gap-1'>
                         <FontAwesomeIcon className='text-lg' icon={faCheckDouble}/>
-                        <div className='flex gap-1'><div className='font-bold'>{details.views}</div> answers</div>
+                        <div className='flex gap-1'><div className='font-bold'>{details.totalAnswers}</div> answers</div>
                     </div>
                 </div>
                 {/* bg-reddishLight */}
                 <div className='flex gap-5'>
                     {!viewer && <div className='bg-bluishLight pl-5 pr-5 pt-1 pb-1 rounded-xl text-white font-semibold shadow-sm shadow-black hidden lg:block'>
-                            <div onClick={()=>navigate('/questions', {state : {name,profilePic,details}})}>Answer</div>
+                            <div onClick={()=>navigate('/questions', {state : {name,profilePic,questionId,viewer: viewer && !details.solved,userId :`${userId ? userId : details.askerId}`,access }})}>Answer</div>
                         </div>}
                     {details.solved && <div className='bg-green-600 pl-2 pr-2 pt-1 pb-1 rounded-xl text-white font-semibold shadow-sm shadow-black'>
                         <div>Solved</div>
@@ -68,8 +91,8 @@ export default function CompactPost({name,profilePic, details={},viewer}){
                 
             </div>
 
-            {!viewer && <div className='w-full h-10 bg-bluishLight text-white rounded-lg flex justify-center items-center text-lg font-semibold lg:hidden'>
-               <div onClick={()=>navigate('/questions', {state : {name,profilePic,details}})}>Answer this question</div>
+            {(!viewer && !details.solved) && <div className='w-full h-10 bg-bluishLight text-white rounded-lg flex justify-center items-center text-lg font-semibold lg:hidden'>
+               <div onClick={()=>navigate('/questions', {state : {name,profilePic,questionId,viewer: viewer && !details.solved,userId:`${userId ? userId : details.askerId}`,access }})}>Answer this question</div>
             </div>}
         </div>
     )

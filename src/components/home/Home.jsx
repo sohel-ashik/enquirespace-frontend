@@ -46,7 +46,7 @@ export default function(){
         fetchData();
     },[load])
 
-    const [open, setOpen] = useState(false);
+    
 
     return(
             <div className='h-full w-full bg-gray3 flex flex-row'>
@@ -57,11 +57,11 @@ export default function(){
                 <div className='lg:w-4/5 h-full w-full  overflow-auto p-5'>
                     {/* the main browsing pages */}
                     <div className='lg:w-4/5 w-full h-fit flex flex-col gap-5'>
-                        <div onClick={()=>setOpen(true)}>
+                        {/* <div onClick={()=>setOpen(true)}> */}
                             <HeaderAsk/>
-                        </div>
+                        {/* </div> */}
                         
-                        <AddPost open={open} setOpen={setOpen}/>
+                        
                         
                         {/* here goes the all content */}
 

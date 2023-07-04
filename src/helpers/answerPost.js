@@ -48,7 +48,7 @@ export default async function answerPostHandler(imageFiles,answer,questionId){
             } else{
                 const retrivedData = await response.json();
                 console.log(retrivedData)
-                return true;
+                return retrivedData;
             }
 
         }catch(err){
