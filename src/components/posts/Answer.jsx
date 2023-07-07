@@ -89,9 +89,9 @@ export default function Answer({details, viewer, askerId,access, solved, setRefr
                 })
                 if(response.ok){
                     const data = await response.json();
-                    if(data.votePath == 'up') setVoteBtnColor({top: 'bg-green-500 text-white',down: ''})
-                    else if(data.votePath == 'down') setVoteBtnColor({top: '', down: 'bg-red-400 text-white'})
-                    else setVoteBtnColor({top: '',down:''});
+                    if(data.votePath == 'up') setVoteBtnColor({top: 'bg-green-500 text-white',down: 'bg-white'})
+                    else if(data.votePath == 'down') setVoteBtnColor({top: 'bg-white', down: 'bg-red-400 text-white'})
+                    else setVoteBtnColor({top: 'bg-white',down:'bg-white'});
 
 
                     setVotes(data.votes);
@@ -120,7 +120,7 @@ export default function Answer({details, viewer, askerId,access, solved, setRefr
                             <button onClick={()=>{
                                 handlePay(details.helperId._id,details.helperId.name,questionId,helperId,setRefresh,details._id);
                             }}
-                            className={`w-8 h-8 flex items-center justify-center rounded-full bg-white text-black`}>
+                            className={`w-8 h-8 flex items-center justify-center rounded-full  text-black`}>
                                 <FontAwesomeIcon className='text-lg' icon={faCircleDollarToSlot}/>
                             </button>
                     </div>}
@@ -133,14 +133,14 @@ export default function Answer({details, viewer, askerId,access, solved, setRefr
 
                     <div className='flex items-center gap-2'>
                         <button onClick={()=>{upDownAdder(answerId,'up',votePath,setVoteChange,setLoadingSetVote)}} disabled = {loadingSetVote}
-                          className={`w-8 h-8 flex items-center justify-center rounded-full bg-white text-black ${voteBtnColor.top}`}>
+                          className={`w-8 h-8 flex items-center justify-center rounded-full  text-black ${voteBtnColor.top}`}>
                             <FontAwesomeIcon className='text-lg' icon={faCaretUp}/>
                         </button>
                             <div className='font-semibold text-black'>{votes.totalUpVotes}</div>
                     </div>
                     <div className='flex items-center gap-2'>
                         <button onClick={()=>{upDownAdder(answerId,'down',votePath,setVoteChange,setLoadingSetVote)}} disabled = {loadingSetVote}
-                         className={`w-8 h-8 flex items-center justify-center rounded-full bg-white  text-black ${voteBtnColor.down}`}>
+                         className={`w-8 h-8 flex items-center justify-center rounded-full   text-black ${voteBtnColor.down}`}>
                             <FontAwesomeIcon className='text-lg' icon={faCaretDown}/>
                         </button>
                             <div className='font-semibold text-black'>{votes.totalDownVotes}</div>

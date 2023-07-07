@@ -97,9 +97,9 @@ function BottomLegend({setAnswerOpne,views,totalUp,totalDown,questionId}){
                 })
                 if(response.ok){
                     const data = await response.json();
-                    if(data.votePath == 'up') setVoteBtnColor({top: 'bg-green-500 text-white',down: ''})
-                    else if(data.votePath == 'down') setVoteBtnColor({top: '', down: 'bg-red-400 text-white'})
-                    else setVoteBtnColor({top: '',down:''});
+                    if(data.votePath == 'up') setVoteBtnColor({top: 'bg-green-500 text-white',down: 'bg-white'})
+                    else if(data.votePath == 'down') setVoteBtnColor({top: 'bg-white', down: 'bg-red-400 text-white'})
+                    else setVoteBtnColor({top: 'bg-white',down:'bg-white'});
 
 
                     setVotes(data.votes);
@@ -123,14 +123,14 @@ function BottomLegend({setAnswerOpne,views,totalUp,totalDown,questionId}){
             <div className='flex gap-3 items-center pr-4'>
                 <div className='flex items-center gap-2'> 
                     <button onClick={()=>{upDownAdder(questionId,'up',votePath,setVoteChange,setLoadingSetVote)}} disabled={loadingSetVote}
-                     className={`w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray1 ${voteBtnColor.top}`}>
+                     className={`w-10 h-10 flex items-center justify-center rounded-full  text-gray1 ${voteBtnColor.top}`}>
                         <FontAwesomeIcon className='text-xl' icon={faCaretUp}/>
                     </button>
                         <div className='font-semibold text-white'>{votes.totalUpVotes}</div>
                 </div>
                 <div className='flex items-center gap-2'>
                     <button onClick={()=>{upDownAdder(questionId,'down',votePath,setVoteChange,setLoadingSetVote)}} disabled ={loadingSetVote}
-                     className={`w-10 h-10 flex items-center justify-center rounded-full bg-white  text-gray1 ${voteBtnColor.down}`}>
+                     className={`w-10 h-10 flex items-center justify-center rounded-full  text-gray1 ${voteBtnColor.down}`}>
                         <FontAwesomeIcon className='text-xl' icon={faCaretDown}/>
                     </button>
                         <div className='font-semibold text-white'>{votes.totalDownVotes}</div>
