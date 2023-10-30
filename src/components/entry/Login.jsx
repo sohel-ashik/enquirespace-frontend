@@ -10,8 +10,8 @@ import {faSpinner} from '@fortawesome/free-solid-svg-icons'
 import LoadingModal from '../modals/LoadingModals';
 
 export default function Login(){
-    const [email,setEmail] = useState('');
-    const [pass,setPass] = useState('');
+    const [email,setEmail] = useState('ashikislam594@gmail.com');
+    const [pass,setPass] = useState('aaaaaaaa');
 
     const [emailFocus,setEmailFocus] = useState('tranborder-gray-300');
     const [passFocus, setPassFocus] = useState('border-gray-300');
